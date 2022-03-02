@@ -1,22 +1,34 @@
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const userRoute = require("./routes/user");
-const authRoute = require("./routes/auth");
-const productRoute = require("./routes/product");
-const cartRoute = require("./routes/cart");
-const orderRoute = require("./routes/order");
-const stripeRoute = require("./routes/stripe");
-const cors = require("cors");
+import express      from "express"
+import mongoose     from "mongoose"
+import dotenv       from "dotenv"
 
-dotenv.config();
+import cors         from "cors"
 
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => console.log("DB Connection Successfull!"))
-  .catch((err) => {
-    console.log(err);
-  });
+import authRoute    from "./routes/auth.js"
+// import userRoute    from "./routes/users.js"
+// import productRoute from "./routes/users.js"
+// import cartRoute    from "./routes/users.js"
+// import orderRoute   from "./routes/users.js"
+// import stripeRoute  from "./routes/users.js"
 
-  
+const app = express()
+
+dotenv.config()
+
+const options = {useNewUrlParser: true, useUnifiedTopology: true}
+
+mongoose.connect(process.env.MONGO_URL, options, () => {console.log("Connected to mongoDB.")})
+
+// middleware
+app.use(express.json());
+app.use(cors())
+
+// routes
+app.use("/api/auth",     authRoute);
+// app.use("/api/users",    userRoute);
+// app.use("/api/products", productRoute);
+// app.use("/api/carts",    cartRoute);
+// app.use("/api/orders",   orderRoute);
+// app.use("/api/checkout", stripeRoute);
+
+app.listen(5000, () => {console.log("http://localhost:5000")})
