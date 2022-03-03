@@ -5,7 +5,7 @@ import dotenv       from "dotenv"
 import cors         from "cors"
 
 import authRoute    from "./routes/auth.js"
-// import userRoute    from "./routes/users.js"
+import userRoute    from "./routes/user.js"
 // import productRoute from "./routes/users.js"
 // import cartRoute    from "./routes/users.js"
 // import orderRoute   from "./routes/users.js"
@@ -25,7 +25,7 @@ app.use(cors())
 
 // routes
 app.use("/api/auth",     authRoute);
-// app.use("/api/users",    userRoute);
+app.use("/api/users",    userRoute);
 // app.use("/api/products", productRoute);
 // app.use("/api/carts",    cartRoute);
 // app.use("/api/orders",   orderRoute);
