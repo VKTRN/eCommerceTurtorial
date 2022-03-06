@@ -2,7 +2,6 @@ import User from "../models/User.js"
 import {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} from "./verifyToken.js"
 
 import {Router} from "express"
-
 const router = Router()
 
 //UPDATE
@@ -50,6 +49,7 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
+// GET USER STATS
 router.get("/stats", verifyToken, async (req, res) => {
   const date     = new Date();
   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
