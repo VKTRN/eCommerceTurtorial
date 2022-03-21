@@ -1,9 +1,9 @@
 import Cart from "../models/Cart.js"
-const {
+import {
   verifyToken,
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
-} = require("./verifyToken");
+} from "./verifyToken.js";
 
 import {Router} from "express"
 const router = Router()
