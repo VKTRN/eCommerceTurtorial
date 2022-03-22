@@ -39,7 +39,9 @@ const ProductList = () => {
   const [filters, setFilters] = useState({})
   const [sort, setSort]     = useState("newest")
   const location            = useLocation()
-  const cat                 = location.pathname.split()[2]
+  const cat                 = location.pathname.split("/")[2]
+
+  console.log('heello')
 
   const handleFilters = (e) => {
     const value = e.target.value
@@ -53,7 +55,7 @@ const ProductList = () => {
     <Container>
       <Navbar />
       <Announcement />
-      <Title>Dresses</Title>
+      <Title>{cat}</Title>
       <FilterContainer>
       <Filter>
         <FilterText>Filter Products:</FilterText>
