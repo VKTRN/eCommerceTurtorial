@@ -7,6 +7,8 @@ import Newsletter from "../components/Newsletter";
 import {useLocation} from 'react-router-dom'
 import { useState, useEffect } from "react";
 import {publicRequest} from '../requestMethods.js'
+import { addProduct } from "../redux/cartRedux";
+import {useDispatch} from 'react-redux'
 
 const Container = styled.div``;
 
@@ -122,11 +124,18 @@ const Product = () => {
       setQuantity(quantity + 1)
     }
   }
+
+  const handleClick = () => {
+    dispatch(addProduct({...product, quantity, color, size}))
+  }
   
   const [product, setProduct]   = useState({})
   const [quantity, setQuantity] = useState(1)
-  const location = useLocation()
-  const id       = location.pathname.split("/")[2]
+  const [color, setColor]       = useState('')
+  const [size, setSize]         = useState('')
+  const location                = useLocation()
+  const dispatch = useDispatch()
+  const id                      = location.pathname.split("/")[2]
 
   useEffect(() => {
     const getProduct = async () => {
@@ -140,7 +149,6 @@ const Product = () => {
     getProduct()
   }, [id])
   
-
   return (
     <Container>
       <Navbar />
@@ -158,16 +166,16 @@ const Product = () => {
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              {product.color?.map((c) => {
-                <FilterColor color = {c} key = {c}/>
-              })}
+              {product.color?.map((c) => (
+                <FilterColor color = {c} key = {c} onClick = {() => setColor(c)}/>
+              ))}
             </Filter>
             <Filter>
               <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                {product.size?.map((s) => {
+              <FilterSize onChange = {(e) => setSize(e.target.value)}>
+                {product.size?.map((s) => (
                   <FilterSizeOption key={s}> {s}</FilterSizeOption>
-                })}
+                  ))}
               </FilterSize>
             </Filter>
           </FilterContainer>
@@ -177,7 +185,7 @@ const Product = () => {
               <Amount>{quantity}</Amount>
               <Add onClick = {() => handleQuantity('inc')}/>
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick = {handleClick}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
