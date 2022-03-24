@@ -170,7 +170,8 @@ const Cart = () => {
         const res = await userRequest.post('/checkout/payment', {
           tokenId: stripeToken.id,
           amount: cart.total * 100,
-        })   
+        }) 
+        console.log(res.data)  
         history.push('/success', {data: res.data})
       } catch (error) {
         console.log(error)
