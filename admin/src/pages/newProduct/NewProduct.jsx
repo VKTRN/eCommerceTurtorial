@@ -1,23 +1,46 @@
 import "./newProduct.css";
 import {useState} from 'react'
+import {getStorage, ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage'
+import app from '../../firebase'
+import {useDispatch} from 'react-redux'
+import {addProduct} from '../../redux/apiCalls'
+
 
 export default function NewProduct() {
 
-  const [input, setInput] = useState({})
+  const [inputs, setInputs] = useState({})
   const [file, setFile] = useState(null)
   const [cat, setCat] = useState([])
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
-    setInput((prev) => {
+    setInputs((prev) => {
       return {...prev, [e.target.name]: e.target.value}
     })
   }
+
   const handleCat = (e) => {
     setCat(e.target.value.split(','))
   }
 
   const handleClick = (e) => {
     e.preventDefault()
+    const fileName = new Date().getTime() + file.name
+    const storage = getStorage(app)
+    const storageRef = ref(storage, fileName)
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on('state_changed', 
+      (s) => {console.log(s)}, 
+      (e) => {console.log(e)}, 
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          const product = {...inputs, img: downloadURL, categories: cat}
+          addProduct(product, dispatch)
+        });
+      }
+    );
   }
 
   return (
@@ -26,7 +49,7 @@ export default function NewProduct() {
       <form className="addProductForm">
         <div className="addProductItem">
           <label>Image</label>
-          <input type="file" id="file" onChange = {(e) => setFile(e.target.files)[0]}/>
+          <input type="file" id="file" onChange = {(e) => setFile(e.target.files[0])}/>
         </div>
         <div className="addProductItem">
           <label>Title</label>
