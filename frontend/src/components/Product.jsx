@@ -73,19 +73,17 @@ const Product = ({item}) => {
   return (
     <Container>
       <Circle/>
-      <Image src={item.img} />
+      <Image src={item.image} />
       <Info>
         <Icon>
           <ShoppingCartOutlined />
         </Icon>
         <Icon>
-          <Link to = {`/product/${item._id}`}>
+          <Link to = {`/product/${item.id}`}>
             <SearchOutlined />
           </Link>
         </Icon>
-        <Icon>
-          <FavoriteBorderOutlined />
-        </Icon>
+
       </Info>
     </Container>
 

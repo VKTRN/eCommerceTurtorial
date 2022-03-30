@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import {publicRequest} from '../requestMethods.js'
 import { addProduct } from "../redux/cartRedux";
 import {useDispatch} from 'react-redux'
+import axios from "axios";
 
 const Container = styled.div``;
 
@@ -140,7 +141,7 @@ const Product = () => {
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const res = await publicRequest.get('/products/find/' + id)
+        const res = await axios.get('https://fakestoreapi.com/products/' + id)
         setProduct(res.data)
       } catch (error) {
         
@@ -155,12 +156,12 @@ const Product = () => {
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src={product.img} />
+          <Image src={product.image} />
         </ImgContainer>
         <InfoContainer>
           <Title>{product.title}</Title>
           <Desc>
-            {product.desc}
+            {product.description}
           </Desc>
           <Price>$ {product.price}</Price>
           <FilterContainer>

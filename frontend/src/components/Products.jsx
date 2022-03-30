@@ -19,10 +19,9 @@ const Products = ({cat, filters, sort}) => {
   useEffect(() => {
     const getProducts = async () =>{
       try {
-        const url = cat? `http://localhost:5000/api/products?category=${cat}` : 'http://localhost:5000/api/products/' 
+        // const url = cat? `http://localhost:5000/api/products?category=${cat}` : 'http://localhost:5000/api/products/' 
         // const res = await axios.get('http://localhost:5000/api/products/' + cat ? cat : "")
-
-        console.log(url);
+        const url = "https://fakestoreapi.com/products?limit=10"
         const res = await axios.get(url)
         setproducts(res.data)
       } catch (error) {

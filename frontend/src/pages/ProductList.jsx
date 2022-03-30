@@ -41,7 +41,6 @@ const ProductList = () => {
   const location            = useLocation()
   const cat                 = location.pathname.split("/")[2]
 
-  console.log('heello')
 
   const handleFilters = (e) => {
     const value = e.target.value

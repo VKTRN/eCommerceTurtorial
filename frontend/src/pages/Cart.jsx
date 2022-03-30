@@ -68,7 +68,8 @@ const ProductDetail = styled.div`
 `;
 
 const Image = styled.img`
-  width: 200px;
+  // width: 200px;
+  max-height:100px;
 `;
 
 const Details = styled.div`
@@ -156,9 +157,9 @@ const Button = styled.button`
 const Cart = () => {
 
   const cart = useSelector(state => state.cart)
+  console.log(cart)
   const [stripeToken, setStripeToken] = useState(null)
   const history = useHistory()
-
 
   const onToken = (token) => {
     setStripeToken(token)
@@ -171,7 +172,6 @@ const Cart = () => {
           tokenId: stripeToken.id,
           amount: cart.total * 100,
         }) 
-        console.log(res.data)  
         history.push('/success', {data: res.data})
       } catch (error) {
         console.log(error)
@@ -200,13 +200,13 @@ const Cart = () => {
             {cart.products.map(product => (
               <Product>
                 <ProductDetail>
-                  <Image src={product.img} />
+                  <Image src={product.image} />
                   <Details>
                     <ProductName>
                       <b>Product:</b> {product.title}
                     </ProductName>
                     <ProductId>
-                      <b>ID:</b> {product._id}
+                      <b>ID:</b> {product.id}
                     </ProductId>
                     <ProductColor color={product.color} />
                     <ProductSize>
@@ -216,9 +216,9 @@ const Cart = () => {
                 </ProductDetail>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <Add />
+                    <Remove/>
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <Remove />
+                    <Add/>
                   </ProductAmountContainer>
                   <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
                 </PriceDetail>

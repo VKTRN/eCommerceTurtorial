@@ -60,8 +60,8 @@ const Input = styled.input`
 `
 
 const Logo = styled.h1`
-font-weight: bold;
-${mobile({ fontSize: "24px" })}
+  font-weight: bold;
+  ${mobile({ fontSize: "24px" })}
 `
 
 const MenuItem = styled.div`
@@ -76,6 +76,7 @@ const MenuItem = styled.div`
 const Navbar = () => {
 
   const quantity = useSelector(state => state.cart.quantity)
+  const username = useSelector(state => state.user.currentUser?.username)
 
   return (
     <Container>
@@ -88,20 +89,34 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>
-            VKTR.
-          </Logo>
+          <Link to='/'>
+            <Logo>
+                VKTR.
+            </Logo>
+          </Link>
         </Center> 
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
-          <Link to = '/cart'>
-            <MenuItem>
-              <Badge badgeContent={quantity} color="primary">
-              <ShoppingCartOutlined />
-              </Badge>
-            </MenuItem>
-          </Link>
+          {!username ?
+            <>
+              <Link to = '/register'>
+                <MenuItem>REGISTER</MenuItem>
+              </Link>
+              <Link to = '/login'>
+                <MenuItem>SIGN IN</MenuItem>
+              </Link>
+            </>
+            :
+            <>
+              <span>Hello, {username}</span>
+              <Link to = '/cart'>
+                <MenuItem>
+                  <Badge badgeContent={quantity} color="primary">
+                  <ShoppingCartOutlined />
+                  </Badge>
+                </MenuItem>
+              </Link>
+            </>
+          }
         </Right>
 
       </Wrapper>
