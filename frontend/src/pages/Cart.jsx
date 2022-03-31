@@ -8,6 +8,9 @@ import StripeCheckout from 'react-stripe-checkout'
 import { useHistory } from "react-router";
 import { useEffect, useState } from "react";
 import {userRequest} from '../requestMethods'
+import { addProduct, removeProduct } from "../redux/cartRedux";
+import {useDispatch} from 'react-redux'
+
 
 const KEY = process.env.REACT_APP_STRIPE
 
@@ -157,12 +160,20 @@ const Button = styled.button`
 const Cart = () => {
 
   const cart = useSelector(state => state.cart)
-  console.log(cart)
   const [stripeToken, setStripeToken] = useState(null)
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const onToken = (token) => {
     setStripeToken(token)
+  }
+
+  const add = (product) => {
+    dispatch(addProduct(product))
+  }
+
+  const remove = (product) => {
+    dispatch(removeProduct(product))
   }
 
   useEffect(() => {
@@ -216,11 +227,11 @@ const Cart = () => {
                 </ProductDetail>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <Remove/>
+                    <Remove onClick = {() => {remove(product)}}/>
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <Add/>
+                    <Add onClick = {() => {add(product)}}/>
                   </ProductAmountContainer>
-                  <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
+                  <ProductPrice>$ {(product.price * product.quantity).toFixed(2)}</ProductPrice>
                 </PriceDetail>
               </Product>
               
@@ -232,7 +243,7 @@ const Cart = () => {
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart.total.toFixed(2)}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
@@ -244,7 +255,7 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart.total.toFixed(2)}</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout 
               name="e-shop"
