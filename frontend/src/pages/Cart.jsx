@@ -157,6 +157,12 @@ const Button = styled.button`
   font-weight: 600;
 `;
 
+const IconWrapper = styled.div`
+    cursor: pointer;
+`;
+
+
+
 const Cart = () => {
 
   const cart = useSelector(state => state.cart)
@@ -227,9 +233,13 @@ const Cart = () => {
                 </ProductDetail>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <Remove onClick = {() => {remove(product)}}/>
+                    <IconWrapper>
+                      <Remove onClick = {() => {remove(product)}}/>
+                    </IconWrapper>
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <Add onClick = {() => {add(product)}}/>
+                    <IconWrapper>
+                      <Add onClick = {() => {add(product)}}/>
+                    </IconWrapper>
                   </ProductAmountContainer>
                   <ProductPrice>$ {(product.price * product.quantity).toFixed(2)}</ProductPrice>
                 </PriceDetail>
@@ -247,15 +257,16 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
+              <SummaryItemPrice>{cart.total > 0 ? "$ 5.90":"$ 0.00"}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
+              
+              <SummaryItemPrice>{cart.total >= 50 ? "$ 5.90":"$ 0.00"} </SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total.toFixed(2)}</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart.total >= 50 || cart.total === 0 ? cart.total.toFixed(2) : (cart.total + 5.9).toFixed(2)}</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout 
               name="e-shop"
